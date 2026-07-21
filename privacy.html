@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Privacy policy — TranscriptSnap</title>
+<meta name="description" content="TranscriptSnap collects no data. Transcripts are processed locally in your browser and never transmitted." />
+<link rel="canonical" href="https://wushu75.github.io/TranscriptSnap/privacy.html" />
+<meta name="robots" content="index, follow" />
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icon32.png" />
+<style>
+  :root {
+    --ink:#0e1317; --paper:#f4f6f6; --muted:#5d6873; --line:#dfe4e6; --teal:#0e7c6b;
+    --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  }
+  body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:17px; line-height:1.68; }
+  .wrap { max-width:680px; margin:0 auto; padding:0 24px; }
+  header { border-bottom:1px solid var(--line); padding:18px 0; }
+  .logo { display:inline-flex; align-items:center; gap:9px; font-weight:650; text-decoration:none; letter-spacing:-.02em; }
+  .mark { width:20px; height:20px; border-radius:6px; background:var(--ink); position:relative; }
+  .mark::before { content:""; position:absolute; left:4px; right:4px; top:6px; height:2px; background:#fff; border-radius:2px; }
+  .mark::after { content:""; position:absolute; left:4px; right:7px; bottom:5px; height:2px; background:var(--teal); border-radius:2px; }
+  h1 { font-size:clamp(30px,5vw,42px); letter-spacing:-.03em; line-height:1.1; margin:56px 0 8px; }
+  .updated { font:600 11px/1 var(--mono); letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
+  h2 { font-size:20px; letter-spacing:-.02em; margin:38px 0 8px; }
+  p, li { color:#243038; }
+  ul { padding-left:20px; }
+  a { color:var(--teal); }
+  footer { border-top:1px solid var(--line); margin:64px 0 0; padding:24px 0 48px; font-size:14px; color:var(--muted); }
+</style>
+</head>
+<body>
+<header><div class="wrap"><a class="logo" href="./"><span class="mark" aria-hidden="true"></span>TranscriptSnap</a></div></header>
+<main class="wrap">
+  <p class="updated" style="margin-top:56px">Last updated 21 July 2026</p>
+  <h1>Privacy policy</h1>
+  <p><strong>TranscriptSnap does not collect, transmit, sell or store your data.</strong> Transcript text is read from the YouTube page you are already viewing, cleaned in your browser's memory, and shown only to you. It is never sent to us or to any third party.</p>
+
+  <h2>What the extension does not do</h2>
+  <ul>
+    <li>It makes no network requests of any kind. There is no backend, no API and no remote code.</li>
+    <li>It has no account system, no login and no identifiers.</li>
+    <li>It runs no analytics, telemetry, crash reporting or advertising.</li>
+    <li>It does not read your browsing history, other tabs, cookies or form data.</li>
+  </ul>
+
+  <h2>What is stored on your device</h2>
+  <p>One preference — whether timestamps are shown — is saved in Chrome's local extension storage. That is the complete contents of storage. Transcript text is held in memory only while the panel is open and is discarded when you close the tab or move to another video. Uninstalling the extension removes the preference.</p>
+
+  <h2>Copying and downloading</h2>
+  <p>Choosing "Copy transcript" writes the text to your system clipboard. Choosing "Download .txt" saves a file to your own Downloads folder using your browser's normal download flow. Both stay on your device.</p>
+
+  <h2>Permissions</h2>
+  <ul>
+    <li><strong>activeTab</strong> — acts on the YouTube tab you are viewing, only when you click.</li>
+    <li><strong>scripting</strong> — reads the transcript rendered on that page and draws the results panel.</li>
+    <li><strong>storage</strong> — saves the single timestamps preference described above.</li>
+    <li><strong>youtube.com host access</strong> — the extension functions only on YouTube watch pages.</li>
+  </ul>
+
+  <h2>Children</h2>
+  <p>The extension collects no data from anyone, including children under 13.</p>
+
+  <h2>Changes</h2>
+  <p>If this policy ever changes, the updated version will be published on this page with a new date, and the change will be described in the repository's release notes.</p>
+
+  <h2>Contact</h2>
+  <p>Questions or concerns: open an issue at <a href="https://github.com/wushu75/TranscriptSnap/issues">github.com/wushu75/TranscriptSnap/issues</a>.</p>
+</main>
+<footer class="wrap"><a href="./">← Back to TranscriptSnap</a></footer>
+</body>
+</html>
