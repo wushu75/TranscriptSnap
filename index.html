@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TranscriptSnap — Free local YouTube transcript cleaner for Chrome</title>
+<meta name="description" content="Free Chrome extension that pulls a YouTube video's transcript, strips timestamps and caption clutter, and lets you copy or download clean text. Runs entirely in your browser." />
+<link rel="canonical" href="https://wushu75.github.io/TranscriptSnap/" />
+<meta name="theme-color" content="#0e7c6b" />
+<meta name="robots" content="index, follow, max-image-preview:large" />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TranscriptSnap" />
+<meta property="og:title" content="TranscriptSnap — Free local YouTube transcript cleaner" />
+<meta property="og:description" content="Copy or download a clean YouTube transcript in one click. No account, no servers, no tracking." />
+<meta property="og:url" content="https://wushu75.github.io/TranscriptSnap/" />
+<meta property="og:image" content="https://wushu75.github.io/TranscriptSnap/assets/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="TranscriptSnap turning timestamped YouTube captions into clean paragraphs" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="TranscriptSnap — Free local YouTube transcript cleaner" />
+<meta name="twitter:description" content="Copy or download a clean YouTube transcript in one click. Nothing leaves your browser." />
+<meta name="twitter:image" content="https://wushu75.github.io/TranscriptSnap/assets/og-image.png" />
+
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icon32.png" />
+<link rel="apple-touch-icon" href="assets/icon128.png" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "TranscriptSnap",
+      "applicationCategory": "BrowserApplication",
+      "operatingSystem": "Chrome, Edge, Brave (Chromium 88+)",
+      "url": "https://wushu75.github.io/TranscriptSnap/",
+      "description": "Chrome extension that extracts a YouTube video's transcript, removes timestamps and caption clutter, and lets you copy or download clean text. All processing happens locally in the browser.",
+      "softwareVersion": "1.0.0",
+      "isAccessibleForFree": true,
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "author": { "@type": "Person", "name": "wushu75", "url": "https://github.com/wushu75" },
+      "featureList": [
+        "One-click transcript extraction on YouTube watch pages",
+        "Removes timestamps, sound cues and duplicated caption lines",
+        "Copy to clipboard or download as .txt",
+        "Toggle timestamps on or off",
+        "No backend, no account, no network requests"
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Does TranscriptSnap send my transcripts anywhere?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. The extension makes no network requests at all. It reads the transcript YouTube already renders on the page, cleans it in memory, and shows it to you. Nothing is uploaded, logged or stored." }
+        },
+        {
+          "@type": "Question",
+          "name": "Which videos work?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Any YouTube video that has captions, including auto-generated ones. If YouTube offers a Show transcript button for the video, TranscriptSnap can clean it. Videos with captions disabled by the uploader have no transcript to extract." }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need an account or API key?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. There is no sign-up, no API key and no paid tier. Install it and it works." }
+        },
+        {
+          "@type": "Question",
+          "name": "What permissions does it ask for?",
+          "acceptedAnswer": { "@type": "Answer", "text": "activeTab, scripting and storage, plus host access to youtube.com. Storage holds one preference: whether timestamps are shown. No transcript text is ever saved." }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it work in Edge, Brave or Opera?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. It is a standard Manifest V3 extension, so any Chromium browser that supports MV3 can load it." }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<style>
+  :root {
+    --ink: #0e1317;
+    --paper: #f4f6f6;
+    --card: #ffffff;
+    --muted: #5d6873;
+    --line: #dfe4e6;
+    --teal: #0e7c6b;
+    --teal-soft: #e2f1ee;
+    --raw: #98a2ad;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+    --wrap: 1080px;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 24px; }
+  .eyebrow {
+    font: 600 11px/1 var(--mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* nav */
+  .nav {
+    display: flex; align-items: center; gap: 12px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .logo { display: flex; align-items: center; gap: 9px; font-weight: 650; letter-spacing: -0.02em; text-decoration: none; }
+  .mark { width: 20px; height: 20px; border-radius: 6px; background: var(--ink); position: relative; flex: none; }
+  .mark::before { content: ""; position: absolute; left: 4px; right: 4px; top: 6px; height: 2px; background: #fff; border-radius: 2px; }
+  .mark::after { content: ""; position: absolute; left: 4px; right: 7px; bottom: 5px; height: 2px; background: var(--teal); border-radius: 2px; }
+  .nav-links { margin-left: auto; display: flex; align-items: center; gap: 20px; font-size: 14px; }
+  .nav-links a { text-decoration: none; color: var(--muted); }
+  .nav-links a:hover { color: var(--ink); }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 18px; border-radius: 9px;
+    font: 600 14px/1 var(--sans);
+    text-decoration: none; cursor: pointer;
+    border: 1px solid var(--line); background: var(--card); color: var(--ink);
+    transition: transform 120ms ease, background 120ms ease;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-primary { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .btn:focus-visible, a:focus-visible, summary:focus-visible, button:focus-visible {
+    outline: 2px solid var(--teal); outline-offset: 3px;
+  }
+
+  /* hero */
+  .hero { padding: 76px 0 8px; }
+  h1 {
+    margin: 14px 0 0;
+    font-size: clamp(38px, 6.4vw, 66px);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    font-weight: 680;
+    max-width: 13ch;
+  }
+  h1 em { font-style: normal; color: var(--teal); }
+  .lede { margin: 20px 0 0; max-width: 52ch; color: var(--muted); font-size: 18px; }
+  .cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  .cta-note { margin: 14px 0 0; font: 500 13px/1.5 var(--mono); color: var(--muted); }
+
+  /* signature: the transform card */
+  .snap { margin: 52px 0 0; }
+  .snap-bar {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 16px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-bottom: 0;
+    border-radius: 14px 14px 0 0;
+  }
+  .snap-title { font: 600 13px/1 var(--sans); }
+  .chip {
+    font: 600 11px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 5px 9px; border-radius: 999px;
+    color: var(--teal); background: var(--teal-soft);
+  }
+  .chip[data-state="raw"] { color: var(--muted); background: #eef0f1; }
+  .toggle { margin-left: auto; display: flex; gap: 4px; background: #eef0f1; padding: 3px; border-radius: 8px; }
+  .toggle button {
+    border: 0; background: transparent; cursor: pointer;
+    font: 600 12px/1 var(--mono); letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--muted); padding: 7px 11px; border-radius: 6px;
+  }
+  .toggle button[aria-pressed="true"] { background: var(--card); color: var(--ink); box-shadow: 0 1px 2px rgba(14,19,23,.12); }
+
+  .snap-body {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 0 0 14px 14px;
+    padding: 26px;
+    min-height: 268px;
+  }
+  .view[hidden] { display: none; }
+  .raw-line { display: flex; gap: 14px; font: 400 14px/1.85 var(--mono); color: var(--raw); }
+  .raw-line .t { color: var(--teal); opacity: .75; flex: none; }
+  .clean-p { margin: 0 0 16px; font-size: 16.5px; line-height: 1.72; max-width: 62ch; }
+  .clean-p:last-child { margin-bottom: 0; }
+  .fade-in { animation: rise 420ms cubic-bezier(.2,.7,.3,1) both; }
+  @keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .fade-in { animation: none; }
+    .btn:hover { transform: none; }
+  }
+
+  /* trust strip */
+  .strip {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    margin: 56px 0 0; background: var(--line);
+    border: 1px solid var(--line); border-radius: 14px; overflow: hidden;
+  }
+  .strip div { background: var(--paper); padding: 22px 20px; }
+  .strip dt { font: 600 11px/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .strip dd { margin: 9px 0 0; font-size: 15px; font-weight: 550; letter-spacing: -0.01em; }
+
+  /* sections */
+  section { padding: 78px 0; }
+  h2 { margin: 10px 0 0; font-size: clamp(27px, 3.6vw, 36px); letter-spacing: -0.028em; line-height: 1.12; font-weight: 660; }
+  .sec-lede { margin: 14px 0 0; color: var(--muted); max-width: 56ch; }
+
+  .steps { margin: 40px 0 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
+  .step { border-top: 2px solid var(--ink); padding-top: 16px; }
+  .step .n { font: 600 12px/1 var(--mono); color: var(--teal); letter-spacing: 0.1em; }
+  .step h3 { margin: 12px 0 6px; font-size: 17px; letter-spacing: -0.015em; }
+  .step p { margin: 0; font-size: 15px; color: var(--muted); }
+
+  .cards { margin: 40px 0 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 13px; padding: 22px 24px; }
+  .card h3 { margin: 0 0 7px; font-size: 16.5px; letter-spacing: -0.015em; }
+  .card p { margin: 0; font-size: 15px; color: var(--muted); }
+
+  details {
+    border-bottom: 1px solid var(--line);
+    padding: 18px 0;
+  }
+  details summary {
+    cursor: pointer; list-style: none;
+    font-weight: 600; font-size: 16.5px; letter-spacing: -0.012em;
+    display: flex; align-items: center; gap: 12px;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; margin-left: auto; color: var(--teal); font: 400 20px/1 var(--mono); }
+  details[open] summary::after { content: "–"; }
+  details p { margin: 12px 0 0; color: var(--muted); font-size: 15.5px; max-width: 66ch; }
+
+  .final {
+    background: var(--ink); color: #fff;
+    border-radius: 16px; padding: 46px 40px;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 24px;
+  }
+  .final h2 { color: #fff; flex: 1 1 320px; }
+  .final .btn { background: #fff; border-color: #fff; }
+
+  footer { border-top: 1px solid var(--line); padding: 30px 0 46px; margin-top: 78px; }
+  .foot { display: flex; flex-wrap: wrap; gap: 18px; align-items: center; font-size: 14px; color: var(--muted); }
+  .foot a { text-decoration: none; }
+  .foot a:hover { color: var(--ink); }
+  .foot .spacer { margin-left: auto; }
+
+  @media (max-width: 760px) {
+    .strip, .steps, .cards { grid-template-columns: 1fr; }
+    .nav-links a.hide-sm { display: none; }
+    .hero { padding-top: 48px; }
+    .snap-body { padding: 20px; }
+    .final { padding: 32px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <nav class="nav">
+    <a class="logo" href="/TranscriptSnap/"><span class="mark" aria-hidden="true"></span>TranscriptSnap</a>
+    <div class="nav-links">
+      <a class="hide-sm" href="#how">How it works</a>
+      <a class="hide-sm" href="#privacy">Privacy</a>
+      <a class="hide-sm" href="#faq">FAQ</a>
+      <a href="https://github.com/wushu75/TranscriptSnap">GitHub</a>
+      <a class="btn btn-primary" href="https://github.com/wushu75/TranscriptSnap/releases/latest">Get the extension</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div class="wrap hero">
+    <p class="eyebrow">Free · Manifest V3 · Local-only</p>
+    <h1>YouTube captions, <em>minus the mess.</em></h1>
+    <p class="lede">TranscriptSnap pulls the transcript from the video you're watching, strips the timestamps and caption clutter, and hands you clean, readable text. Copy it, download it, done.</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="https://github.com/wushu75/TranscriptSnap/releases/latest">Get the extension</a>
+      <a class="btn" href="https://github.com/wushu75/TranscriptSnap">View source</a>
+    </div>
+    <p class="cta-note">0 servers &nbsp;·&nbsp; 0 accounts &nbsp;·&nbsp; 0 network requests</p>
+
+    <!-- Signature element: the same transcript, before and after cleaning -->
+    <div class="snap">
+      <div class="snap-bar">
+        <span class="mark" aria-hidden="true"></span>
+        <span class="snap-title">TranscriptSnap</span>
+        <span class="chip" id="chip" data-state="clean">Transcribed</span>
+        <div class="toggle" role="group" aria-label="Transcript view">
+          <button id="btn-raw" type="button" aria-pressed="false" aria-controls="view-raw">Raw</button>
+          <button id="btn-clean" type="button" aria-pressed="true" aria-controls="view-clean">Snapped</button>
+        </div>
+      </div>
+      <div class="snap-body">
+        <div class="view" id="view-raw" hidden>
+          <div class="raw-line"><span class="t">0:12</span><span>so the first thing you want to do is</span></div>
+          <div class="raw-line"><span class="t">0:14</span><span>[Music]</span></div>
+          <div class="raw-line"><span class="t">0:15</span><span>so the first thing you want to do is</span></div>
+          <div class="raw-line"><span class="t">0:17</span><span>open up the settings panel and then</span></div>
+          <div class="raw-line"><span class="t">0:19</span><span>scroll down to where it says export</span></div>
+          <div class="raw-line"><span class="t">0:22</span><span>uh and that's where most people get</span></div>
+          <div class="raw-line"><span class="t">0:24</span><span>stuck because the button is hidden</span></div>
+          <div class="raw-line"><span class="t">0:26</span><span>behind the advanced toggle</span></div>
+          <div class="raw-line"><span class="t">0:28</span><span>[Applause]</span></div>
+        </div>
+        <div class="view" id="view-clean">
+          <p class="clean-p">So the first thing you want to do is open up the settings panel and then scroll down to where it says export.</p>
+          <p class="clean-p">And that's where most people get stuck, because the button is hidden behind the advanced toggle.</p>
+        </div>
+      </div>
+    </div>
+
+    <dl class="strip">
+      <div><dt>No backend</dt><dd>Nothing to upload to. There is no server.</dd></div>
+      <div><dt>No account</dt><dd>No sign-up, no API key, no paid tier.</dd></div>
+      <div><dt>No tracking</dt><dd>Zero analytics, zero third-party scripts.</dd></div>
+    </dl>
+  </div>
+
+  <section id="how" class="wrap">
+    <p class="eyebrow">How it works</p>
+    <h2>Three clicks from video to clean text</h2>
+    <p class="sec-lede">TranscriptSnap reads the transcript YouTube already renders on the page. That's why it needs no API, no key and no connection.</p>
+    <div class="steps">
+      <div class="step">
+        <span class="n">STEP 01</span>
+        <h3>Open a video</h3>
+        <p>On any youtube.com/watch page, click the TranscriptSnap pill in the corner or the toolbar icon.</p>
+      </div>
+      <div class="step">
+        <span class="n">STEP 02</span>
+        <h3>Hit Transcribe</h3>
+        <p>The transcript is read from the page, de-duplicated, stripped of timestamps and sound cues, and regrouped into paragraphs.</p>
+      </div>
+      <div class="step">
+        <span class="n">STEP 03</span>
+        <h3>Copy or download</h3>
+        <p>Take it to your clipboard or save a .txt file. Want the timestamps back? One toggle brings them in.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="wrap" style="padding-top:0">
+    <p class="eyebrow">What you get</p>
+    <h2>Small tool, no surprises</h2>
+    <div class="cards">
+      <article class="card">
+        <h3>Actually readable output</h3>
+        <p>Caption fragments get merged into sentences and paragraphs at natural pauses, instead of dumping 400 two-second lines.</p>
+      </article>
+      <article class="card">
+        <h3>Timestamps on demand</h3>
+        <p>Off by default for reading and pasting. Flip them on when you need to cite a moment or jump back to it.</p>
+      </article>
+      <article class="card">
+        <h3>Clear status, every step</h3>
+        <p>A chip tells you exactly where you are: Ready, Transcribing, Transcribed, Copied — or a plain-English reason it couldn't.</p>
+      </article>
+      <article class="card">
+        <h3>Four permissions, no more</h3>
+        <p>activeTab, scripting, storage and youtube.com. Storage keeps one setting: timestamps on or off.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="privacy" class="wrap" style="padding-top:0">
+    <p class="eyebrow">Privacy</p>
+    <h2>The transcript never leaves your browser</h2>
+    <p class="sec-lede">This isn't a policy promise wrapped around a data pipeline. There is no pipeline. The extension makes no network requests of any kind — you can verify it in the DevTools network tab, or read the source, which is short.</p>
+    <div class="cards">
+      <article class="card">
+        <h3>What is collected</h3>
+        <p>Nothing. No transcript text, no video IDs, no usage events, no identifiers.</p>
+      </article>
+      <article class="card">
+        <h3>What is stored</h3>
+        <p>One boolean in Chrome's local storage: whether you want timestamps shown. It's removed when you uninstall.</p>
+      </article>
+    </div>
+    <p style="margin-top:26px"><a href="privacy.html" class="btn">Read the full privacy policy</a></p>
+  </section>
+
+  <section id="faq" class="wrap" style="padding-top:0">
+    <p class="eyebrow">FAQ</p>
+    <h2>Questions people actually ask</h2>
+    <div style="margin-top:28px">
+      <details open>
+        <summary>Does TranscriptSnap send my transcripts anywhere?</summary>
+        <p>No. The extension makes no network requests at all. It reads the transcript YouTube already renders on the page, cleans it in memory, and shows it to you. Nothing is uploaded, logged or stored.</p>
+      </details>
+      <details>
+        <summary>Which videos work?</summary>
+        <p>Any YouTube video that has captions, including auto-generated ones. If YouTube offers a "Show transcript" button for the video, TranscriptSnap can clean it. If the uploader disabled captions, there is no transcript to extract and you'll see a clear message saying so.</p>
+      </details>
+      <details>
+        <summary>Do I need an account or an API key?</summary>
+        <p>No. There is no sign-up, no key and no paid tier. Install it and it works.</p>
+      </details>
+      <details>
+        <summary>What permissions does it ask for?</summary>
+        <p>activeTab, scripting and storage, plus host access to youtube.com. Storage holds a single preference — whether timestamps are shown. No transcript text is ever saved.</p>
+      </details>
+      <details>
+        <summary>Does it work in Edge, Brave or Opera?</summary>
+        <p>Yes. It's a standard Manifest V3 extension, so any Chromium browser with MV3 support can load it.</p>
+      </details>
+      <details>
+        <summary>Something broke. Where do I report it?</summary>
+        <p>Open an issue on GitHub. The bug form asks for the video URL, your browser version and what the status chip said, which is usually enough to reproduce it.</p>
+      </details>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="final">
+      <h2>Get the transcript. Skip the cleanup.</h2>
+      <a class="btn" href="https://github.com/wushu75/TranscriptSnap/releases/latest">Download the latest release</a>
+      <a class="btn" href="https://github.com/wushu75/TranscriptSnap/issues/new/choose" style="background:transparent;border-color:#4a555e;color:#fff">Report a bug</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>TranscriptSnap — free and open source under the MIT licence.</span>
+    <span class="spacer"></span>
+    <a href="privacy.html">Privacy</a>
+    <a href="https://github.com/wushu75/TranscriptSnap">Source</a>
+    <a href="https://github.com/wushu75/TranscriptSnap/issues">Issues</a>
+  </div>
+</footer>
+
+<script>
+  // Signature demo: swap between the raw captions and the cleaned result.
+  const views = { raw: document.getElementById("view-raw"), clean: document.getElementById("view-clean") };
+  const btns = { raw: document.getElementById("btn-raw"), clean: document.getElementById("btn-clean") };
+  const chip = document.getElementById("chip");
+
+  function show(mode) {
+    const other = mode === "raw" ? "clean" : "raw";
+    views[other].hidden = true;
+    views[mode].hidden = false;
+    views[mode].classList.remove("fade-in");
+    void views[mode].offsetWidth;
+    views[mode].classList.add("fade-in");
+    btns[mode].setAttribute("aria-pressed", "true");
+    btns[other].setAttribute("aria-pressed", "false");
+    chip.dataset.state = mode;
+    chip.textContent = mode === "raw" ? "Raw captions" : "Transcribed";
+  }
+
+  btns.raw.addEventListener("click", () => show("raw"));
+  btns.clean.addEventListener("click", () => show("clean"));
+</script>
+</body>
+</html>
