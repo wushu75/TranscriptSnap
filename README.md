@@ -91,6 +91,6 @@ Bug reports and small, focused pull requests are welcome. Two rules that won't b
 
 ## Licence
 
-MIT — see [LICENSE](LICENSE).
+MIT 
 
 Not affiliated with, endorsed by or sponsored by YouTube or Google.
