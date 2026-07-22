@@ -4,7 +4,7 @@
 
 No backend. No account. No network requests — not one.
 
-[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/pehnikkgaikdmpdmodoemfcifboopbil?label=Chrome%20Web%20Store)](https://chromewebstore.google.com/detail/transcriptsnap/pehnikkgaikdmpdmodoemfcifboopbil)
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/pehnikkgaikdmpdmodoemfcifboopbil?label=Chrome%20Web%20Store)](https://chromewebstore.google.com/detail/transcriptsnap/pehnikkgaikdmpdmodoemfcifboopbil?authuser=0&hl=en-GB)
 [![Users](https://img.shields.io/chrome-web-store/users/pehnikkgaikdmpdmodoemfcifboopbil)](https://chromewebstore.google.com/detail/transcriptsnap/pehnikkgaikdmpdmodoemfcifboopbil)
 [![Rating](https://img.shields.io/chrome-web-store/rating/pehnikkgaikdmpdmodoemfcifboopbil)](https://chromewebstore.google.com/detail/transcriptsnap/pehnikkgaikdmpdmodoemfcifboopbil)
 
