@@ -4,6 +4,12 @@
 
 No backend. No account. No network requests — not one.
 
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/pehnikkgaikdmpdmodoemfcifboopbil?label=Chrome%20Web%20Store)](https://chromewebstore.google.com/detail/transcriptsnap/pehnikkgaikdmpdmodoemfcifboopbil)
+[![Users](https://img.shields.io/chrome-web-store/users/pehnikkgaikdmpdmodoemfcifboopbil)](https://chromewebstore.google.com/detail/transcriptsnap/pehnikkgaikdmpdmodoemfcifboopbil)
+[![Rating](https://img.shields.io/chrome-web-store/rating/pehnikkgaikdmpdmodoemfcifboopbil)](https://chromewebstore.google.com/detail/transcriptsnap/pehnikkgaikdmpdmodoemfcifboopbil)
+
+⬇️ **[Install from the Chrome Web Store](https://chromewebstore.google.com/detail/transcriptsnap/pehnikkgaikdmpdmodoemfcifboopbil)**
+
 🔗 **[Website](https://wushu75.github.io/TranscriptSnap/)** · **[Privacy policy](https://wushu75.github.io/TranscriptSnap/privacy.html)** · **[Report a bug](https://github.com/wushu75/TranscriptSnap/issues/new/choose)**
 
 ---
@@ -29,7 +35,11 @@ The only thing written to storage is one boolean: whether timestamps are shown.
 
 ## Install
 
-### From a release (recommended)
+### From the Chrome Web Store (recommended)
+
+**[Add TranscriptSnap to Chrome](https://chromewebstore.google.com/detail/transcriptsnap/pehnikkgaikdmpdmodoemfcifboopbil)** — one click, updates automatically.
+
+### From a release
 
 1. Download `TranscriptSnap.zip` from the [latest release](https://github.com/wushu75/TranscriptSnap/releases/latest) and unzip it.
 2. Go to `chrome://extensions`.
@@ -37,43 +47,6 @@ The only thing written to storage is one boolean: whether timestamps are shown.
 4. Click **Load unpacked** and select the unzipped folder.
 5. Open any YouTube video with captions.
 
-### From source
-
-```bash
-git clone https://github.com/wushu75/TranscriptSnap.git
-```
-
-Then load the `extension/` folder via **Load unpacked**, as above.
-
-Works in Chrome, Edge, Brave, Opera and any Chromium browser with Manifest V3 support (Chrome 88+).
-
-## Repository layout
-
-```
-extension/          The extension itself — this is what you load unpacked
-  manifest.json     Manifest V3
-  content.js        Extraction, cleaning, panel UI, state machine
-  background.js     Service worker (toolbar badge only)
-  popup.html/.js    Toolbar popup
-  style.css         Shared styles for panel and popup
-  icons/            16, 32, 48, 128 px
-docs/               The website, served by GitHub Pages
-.github/            Issue templates
-TESTING.md          Manual test plan
-STORE.md            Chrome Web Store listing copy and submission checklist
-```
-
-## Building the store zip
-
-The zip must have `manifest.json` at its root, so zip the *contents* of `extension/`, not the folder:
-
-```bash
-cd extension && zip -r ../TranscriptSnap.zip . -x ".*" && cd ..
-```
-
-## Testing
-
-See **[TESTING.md](TESTING.md)** for the manual test plan — happy path, no-captions path, SPA navigation, dark mode and accessibility checks.
 
 ## Known limits
 
@@ -91,6 +64,6 @@ Bug reports and small, focused pull requests are welcome. Two rules that won't b
 
 ## Licence
 
-MIT 
+MIT — see [LICENSE](LICENSE).
 
 Not affiliated with, endorsed by or sponsored by YouTube or Google.
