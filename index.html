@@ -36,8 +36,10 @@
       "applicationCategory": "BrowserApplication",
       "operatingSystem": "Chrome, Edge, Brave (Chromium 88+)",
       "url": "https://wushu75.github.io/TranscriptSnap/",
+      "installUrl": "https://chromewebstore.google.com/detail/transcriptsnap/pehnikkgaikdmpdmodoemfcifboopbil",
+      "downloadUrl": "https://chromewebstore.google.com/detail/transcriptsnap/pehnikkgaikdmpdmodoemfcifboopbil",
       "description": "Chrome extension that extracts a YouTube video's transcript, removes timestamps and caption clutter, and lets you copy or download clean text. All processing happens locally in the browser.",
-      "softwareVersion": "1.0.0",
+      "softwareVersion": "1.0.4",
       "isAccessibleForFree": true,
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
       "author": { "@type": "Person", "name": "wushu75", "url": "https://github.com/wushu75" },
@@ -47,7 +49,14 @@
         "Copy to clipboard or download as .txt",
         "Toggle timestamps on or off",
         "No backend, no account, no network requests"
-      ]
+      ],
+      "review": {
+        "@type": "Review",
+        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+        "author": { "@type": "Person", "name": "Sector 77G" },
+        "datePublished": "2026-09-25",
+        "reviewBody": "It does what it says it does, it does-not what it says it doesn't. It creates, virtually instantly, an editable, downloadable transcript of a YouTube video's captions. Only your imagination limits the possibilities this opens up for research, study, and so much more."
+      }
     },
     {
       "@type": "FAQPage",
@@ -232,6 +241,28 @@
   .card h3 { margin: 0 0 7px; font-size: 16.5px; letter-spacing: -0.015em; }
   .card p { margin: 0; font-size: 15px; color: var(--muted); }
 
+  .review {
+    margin: 34px 0 0;
+    max-width: 760px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 32px 34px;
+  }
+  .review-stars { color: var(--teal); font-size: 18px; letter-spacing: 3px; }
+  .review blockquote { margin: 16px 0 0; }
+  .review blockquote p:first-child {
+    margin: 0;
+    font-size: clamp(21px, 2.6vw, 26px);
+    line-height: 1.35;
+    letter-spacing: -0.02em;
+    font-weight: 620;
+    color: var(--ink);
+  }
+  .review-rest { margin: 16px 0 0; font-size: 15.5px; line-height: 1.65; color: var(--muted); }
+  .review figcaption { margin: 20px 0 0; font: 500 13px/1.5 var(--mono); color: var(--muted); }
+  .review figcaption a { color: var(--teal); }
+
   details {
     border-bottom: 1px solid var(--line);
     padding: 18px 0;
@@ -277,9 +308,10 @@
     <div class="nav-links">
       <a class="hide-sm" href="#how">How it works</a>
       <a class="hide-sm" href="#privacy">Privacy</a>
+      <a class="hide-sm" href="#reviews">Reviews</a>
       <a class="hide-sm" href="#faq">FAQ</a>
       <a href="https://github.com/wushu75/TranscriptSnap">GitHub</a>
-      <a class="btn btn-primary" href="https://chromewebstore.google.com/detail/transcriptsnap/pehnikkgaikdmpdmodoemfcifboopbil?authuser=0&hl=en-GB">Get the extension</a>
+      <a class="btn btn-primary" href="https://chromewebstore.google.com/detail/transcriptsnap/pehnikkgaikdmpdmodoemfcifboopbil">Add to Chrome</a>
     </div>
   </nav>
 </header>
@@ -290,7 +322,7 @@
     <h1>YouTube captions, <em>minus the mess.</em></h1>
     <p class="lede">TranscriptSnap pulls the transcript from the video you're watching, strips the timestamps and caption clutter, and hands you clean, readable text. Copy it, download it, done.</p>
     <div class="cta">
-      <a class="btn btn-primary" href="https://chromewebstore.google.com/detail/transcriptsnap/pehnikkgaikdmpdmodoemfcifboopbil?authuser=0&hl=en-GB">Get the extension</a>
+      <a class="btn btn-primary" href="https://chromewebstore.google.com/detail/transcriptsnap/pehnikkgaikdmpdmodoemfcifboopbil">Add to Chrome — it's free</a>
       <a class="btn" href="https://github.com/wushu75/TranscriptSnap">View source</a>
     </div>
     <p class="cta-note">0 servers &nbsp;·&nbsp; 0 accounts &nbsp;·&nbsp; 0 network requests</p>
@@ -340,7 +372,7 @@
       <div class="step">
         <span class="n">STEP 01</span>
         <h3>Open a video</h3>
-        <p>On any youtube.com/watch page, click the TranscriptSnap pill in the corner or the toolbar icon.</p>
+        <p>Install from the Chrome Web Store, then on any youtube.com/watch page click the TranscriptSnap pill or the toolbar icon.</p>
       </div>
       <div class="step">
         <span class="n">STEP 02</span>
@@ -395,6 +427,20 @@
     <p style="margin-top:26px"><a href="privacy.html" class="btn">Read the full privacy policy</a></p>
   </section>
 
+  <section id="reviews" class="wrap" style="padding-top:0">
+    <p class="eyebrow">From the Chrome Web Store</p>
+    <figure class="review">
+      <div class="review-stars" aria-label="Five out of five stars">★★★★★</div>
+      <blockquote>
+        <p>It does what it says it does, it does-not what it says it doesn't.</p>
+        <p class="review-rest">It creates, virtually instantly, an editable, downloadable transcript of a YouTube video's captions. Only your imagination limits the possibilities this opens up for research, study, and so much more. I look forward to the future — and hopefully the developer will continue to add features while keeping the product simple and effective. Nice job!</p>
+      </blockquote>
+      <figcaption>
+        Sector 77G · <a href="https://chromewebstore.google.com/detail/transcriptsnap/pehnikkgaikdmpdmodoemfcifboopbil/reviews" target="_blank" rel="noopener">Chrome Web Store review</a>, September 2026
+      </figcaption>
+    </figure>
+  </section>
+
   <section id="faq" class="wrap" style="padding-top:0">
     <p class="eyebrow">FAQ</p>
     <h2>Questions people actually ask</h2>
@@ -429,7 +475,7 @@
   <div class="wrap">
     <div class="final">
       <h2>Get the transcript. Skip the cleanup.</h2>
-      <a class="btn" href="https://github.com/wushu75/TranscriptSnap/releases/latest">Download the latest release</a>
+      <a class="btn" href="https://chromewebstore.google.com/detail/transcriptsnap/pehnikkgaikdmpdmodoemfcifboopbil">Add to Chrome</a>
       <a class="btn" href="https://github.com/wushu75/TranscriptSnap/issues/new/choose" style="background:transparent;border-color:#4a555e;color:#fff">Report a bug</a>
     </div>
   </div>
